@@ -1,0 +1,75 @@
+--D22126855
+DROP TABLE CustGuest;
+DROP TABLE BookingRecipts;
+DROP TABLE Staff;
+DROP TABLE Customer;
+DROP TABLE Manager;
+DROP TABLE Restraunt;
+DROP TABLE TBZ;
+
+CREATE TABLE TBZ(
+tableID NUMBER(6)NOT NULL,
+tablelocation VARCHAR(50)NOT NULL,
+CONSTRAINT TBZ_pk PRIMARY KEY(tableID)
+);
+
+CREATE TABLE Restraunt(
+restID NUMBER(6),
+restNum VARCHAR2(10),
+restAddress VARCHAR2(100),
+CONSTRAINT Restraunt_PK PRIMARY KEY (restID)
+);
+
+CREATE TABLE Manager(
+managerID Number(6),
+restID NUMBER (6),
+CONSTRAINT Manager_PK PRIMARY KEY (managerID),
+CONSTRAINT mn_FK FOREIGN KEY (restID) REFERENCES Restraunt (restID) 
+);
+
+CREATE TABLE Staff(
+staffID NUMBER(6) ,
+staffJob VARCHAR(50) ,
+staffName VARCHAR2(30) ,
+staffPhNo NUMBER(10) ,
+staffEmail VARCHAR2(50),
+staffAddress VARCHAR2(100),
+staffDob VARCHAR2(45) ,
+CONSTRAINT staff_PK PRIMARY KEY (staffID)
+);
+
+
+
+
+CREATE TABLE Customer (
+custID NUMBER(6) NOT NULL,
+custName VARCHAR2(30) NOT NULL,
+custEmail VARCHAR2(50) NOT NULL,
+custAddress VARCHAR2(100) NOT NULL,
+custAge NUMBER(3) NOT NULL,
+bookingID NUMBER(6) ,
+CONSTRAINT Customer_PK PRIMARY KEY (custID)
+);
+
+
+
+CREATE TABLE BookingRecipts(
+bookingID NUMBER(6) ,
+custID NUMBER(6),
+timeID DATE ,
+tableID NUMBER(6) ,
+TableAmountID NUMBER(8),
+staffID NUMBER(6),
+CONSTRAINT bk_pk PRIMARY KEY (bookingID),
+CONSTRAINT BR_Cust_FK FOREIGN KEY (custID) REFERENCES Customer (custID),
+CONSTRAINT BR_Staff_FK FOREIGN KEY (staffID) REFERENCES Staff (staffID)
+);
+
+CREATE TABLE CustGuest(
+tableID NUMBER(6) ,
+bookingID NUMBER(6),
+GuestName VARCHAR2(20),
+GuestEmail VARCHAR2(50),
+CONSTRAINT cg_pk PRIMARY KEY (tableID),
+CONSTRAINT C_BR_FK FOREIGN KEY (bookingID) REFERENCES BookingRecipts (bookingID)
+);
